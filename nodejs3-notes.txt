@@ -1,0 +1,18 @@
+NOSQL --- not only SQL
+transactional data Example ---> Daily updates like money transfer
+In Sql, transactional data are saved by Relational Model like TABLES and ROWS
+NOSQL - save data in a format other than Relational Tables
+NOSQL PROS as follows...
+-->can save hierarchical complex data like Tree Structure
+--> Flexible Schema - schema can be added freely
+--> SCALING
+	horizontal Scaling or Scale Out (No Limit)
+	  /multiple instance
+	  /multiple computer(adding multiple computers to the source)
+	vertical Scaling (always have limit)
+	  /adding hardware resources(adding ram and cpu to the original)
+--> Fast queries due to data model
+--> Ease of use for developers
+-------------------------------------------------------------------------
+Nodejs Express -> mongoose -> MongoDB
+mongoose is a driver which connects Nodejs and MongoDB database

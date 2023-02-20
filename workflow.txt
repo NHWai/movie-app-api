@@ -1,0 +1,8 @@
+user request
+      router LAYER
+	(/mapping/controller method) do these things in router layer
+	controller LAYER
+	    (/request parameter
+	          /validate) do these things in controller layer
+	    service LAYER
+	    	(/business logic) do these things in service layer
