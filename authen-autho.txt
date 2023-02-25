@@ -1,0 +1,5 @@
+Authentication -> valid user of system
+	username, password
+	login
+Authorization
+	does user has access right to do something

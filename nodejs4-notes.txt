@@ -1,0 +1,10 @@
+When to use which model?
+1) Embedding Model 2) Referencing Model
+
+Embedding Model
+	=>embedding is for one to one relationship (one movie one reviews)
+
+Referencing Model
+	=> Director Model should be referencing model.(one movie many directors or one director many movies)
+
+

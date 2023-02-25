@@ -10,6 +10,8 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 const middleware = require("./middleware");
 const todosRouter = require("./routes/todos");
+const moviesRouter = require("./routes/movies");
+const castsRouter = require("./routes/casts");
 
 var app = express();
 
@@ -35,8 +37,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/todos", todosRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/todos", todosRouter);
+app.use("/api/movies", moviesRouter);
+app.use("/api/casts", castsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
