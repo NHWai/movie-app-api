@@ -1,0 +1,16 @@
+JWT Pros => No need to call Database in every API call, validation can be computed in memory.So it means increase in performance.
+
+
+********************************************************************************
+
+Json Web Token (JWT)
+	=>header.payload.signature
+	=>base64urlEncoding(header)+"."+base64urlEncoding(payload)+"."+base64urlEncoding(signature)
+
+********************************************************************************
+Header -> Alogrithm name of Hash and Type of Token (eg.header => {"alg":"HS256","typ":"JWT"}
+
+Payload -> payload has the identity and info of user but no sensitive info like password should be added in payload because it can be decrypted
+
+Signature -> it is the key of JWT
+	  -> (secretkey, base64urlEncoding(header) + '.' + base64urlEncoding(payload))

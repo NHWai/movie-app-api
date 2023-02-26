@@ -3,3 +3,13 @@ Authentication -> valid user of system
 	login
 Authorization
 	does user has access right to do something
+
+////////////////////////////////////////////////////
+
+Authentication Methods
+  1) Password-based Authentication(Prone to phishing attack)
+  2) Multi-factor Authentication
+  3) Certificate-based Authentication
+  4) Biometric Authentication
+  	Facial Recognition,Fingerprint Scanner,Speaker Recognition,Eye Scanners
+  5) Token-based Authentication
