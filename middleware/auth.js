@@ -1,4 +1,6 @@
 const jwt = require("jsonwebtoken");
+let Users = require("../models/Users");
+
 require("dotenv").config();
 const secret = process.env.TOKEN_SECRET;
 
@@ -10,7 +12,6 @@ const verifyUserToken = async (req, res, next) => {
 
   try {
     const [type, tokenstr] = token.split(" ");
-
     if (type !== "Bearer") return res.status(401).send("Unauthorized request");
 
     if (tokenstr === null || !tokenstr)
@@ -20,7 +21,15 @@ const verifyUserToken = async (req, res, next) => {
 
     if (!verifiedUser) return res.status(401).send("Unauthorized request");
 
-    req.user = verifiedUser; //userId
+    //validating login-user is one of the users in the userlist in database
+    const { id } = verifiedUser;
+
+    const user = await Users.findById(id);
+    if (!user) {
+      res.status(401).send("Unauthorized request");
+    }
+
+    req.user = { username: user.username, id: user._id, role: user.role };
     next();
   } catch (err) {
     res.status(401).send("Access Denied/ Unauthorized request");

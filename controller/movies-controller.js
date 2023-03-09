@@ -11,6 +11,7 @@ const handle = (fn, httpErrorCode) => (req, res, next) => {
 
 // Handler Function for each HTTP Verbs
 const getAllMovieHandler = async (req, res, next) => {
+  const { username, role } = req.user;
   const movielist = await MovieService.getAllMovies();
   if (!movielist) throw Error("No movies");
   //adding login userInfo in response json

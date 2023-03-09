@@ -10,7 +10,7 @@ const registerUser = async (req, res, next) => {
 
   try {
     const user = await UserService.register(username, password, role);
-    const payload = { id: user._id, username: user.username, role: user.role };
+    const payload = { id: user._id };
     const token = jwt.sign(payload, secret, { expiresIn: "1h" });
     return res.status(200).json({ token });
   } catch (err) {
@@ -24,7 +24,7 @@ const login = async (req, res, next) => {
   try {
     const user = await UserService.login(username, password);
 
-    const payload = { id: user._id, username: user.username, role: user.role };
+    const payload = { id: user._id };
     const token = jwt.sign(payload, secret, { expiresIn: "1h" });
     return res.status(200).json({ token });
   } catch (err) {
