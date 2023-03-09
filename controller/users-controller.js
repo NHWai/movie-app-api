@@ -6,10 +6,11 @@ const secret = process.env.TOKEN_SECRET;
 const registerUser = async (req, res, next) => {
   let username = req.body["username"];
   let password = req.body["password"];
-  console.log(username, password);
+  let role = req.body["role"];
+
   try {
-    const user = await UserService.register(username, password);
-    const payload = { id: user._id };
+    const user = await UserService.register(username, password, role);
+    const payload = { id: user._id, username: user.username, role: user.role };
     const token = jwt.sign(payload, secret, { expiresIn: "1h" });
     return res.status(200).json({ token });
   } catch (err) {
@@ -22,7 +23,8 @@ const login = async (req, res, next) => {
   let password = req.body["password"];
   try {
     const user = await UserService.login(username, password);
-    const payload = { id: user._id };
+
+    const payload = { id: user._id, username: user.username, role: user.role };
     const token = jwt.sign(payload, secret, { expiresIn: "1h" });
     return res.status(200).json({ token });
   } catch (err) {

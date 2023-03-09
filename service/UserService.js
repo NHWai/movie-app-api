@@ -1,7 +1,7 @@
 let Users = require("../models/Users");
 const bcrypt = require("bcrypt");
 
-const register = async (username, password) => {
+const register = async (username, password, role) => {
   //generatig salt using bcrypt
   const salt = await bcrypt.genSalt(10);
 
@@ -12,6 +12,7 @@ const register = async (username, password) => {
   const user = new Users({
     username: username,
     password: hashPassword,
+    role: role,
   });
   return user.save();
 };

@@ -11,7 +11,7 @@ const verifyUserToken = async (req, res, next) => {
   try {
     const [type, tokenstr] = token.split(" ");
 
-    // if (type !== "Bearer") return res.status(401).send("Unauthorized request");
+    if (type !== "Bearer") return res.status(401).send("Unauthorized request");
 
     if (tokenstr === null || !tokenstr)
       return res.status(401).send("Unauthorized request");
@@ -28,19 +28,3 @@ const verifyUserToken = async (req, res, next) => {
 };
 
 module.exports = { verifyUserToken };
-
-/*
-//Valid Users
- {
-    "username":"nhwai",
-    "password":"nhw997"
-  },
-  {
-    "username":"mgmg",
-    "password":"mgmg97"
-  },
-  {
-    "username":"komg",
-    "password":"koko97"
-  }
-*/

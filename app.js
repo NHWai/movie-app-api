@@ -6,6 +6,8 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+var cors = require("cors");
+
 const middleware = require("./middleware");
 const todosRouter = require("./routes/todos");
 const moviesRouter = require("./routes/movies");
@@ -14,7 +16,7 @@ const usersRouter = require("./routes/users");
 const auth = require("./middleware/auth");
 
 var app = express();
-
+app.use(cors());
 //connecting to mongodb database
 mongoose
   .connect(db, {

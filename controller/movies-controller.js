@@ -13,7 +13,8 @@ const handle = (fn, httpErrorCode) => (req, res, next) => {
 const getAllMovieHandler = async (req, res, next) => {
   const movielist = await MovieService.getAllMovies();
   if (!movielist) throw Error("No movies");
-  return res.status(200).json(movielist);
+  //adding login userInfo in response json
+  return res.status(200).json({ movielist, username, role });
 };
 
 const getMovieByIdHandler = async (req, res, next) => {
