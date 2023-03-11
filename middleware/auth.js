@@ -29,7 +29,7 @@ const verifyUserToken = async (req, res, next) => {
       res.status(401).send("Unauthorized request");
     }
 
-    req.user = { username: user.username, id: user._id, role: user.role };
+    // req.user = { username: user.username, id: user._id, role: user.role };
     next();
   } catch (err) {
     res.status(401).send("Access Denied/ Unauthorized request");
