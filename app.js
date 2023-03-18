@@ -5,7 +5,8 @@ const { db } = require("./config/database");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-
+require("dotenv").config();
+const dburi = process.env.MONGODB_URI;
 var cors = require("cors");
 
 const middleware = require("./middleware");
@@ -26,8 +27,7 @@ app.use(cors());
 //   .catch((err) => console.log(err));
 
 //connecting to mongodb atlas
-const dburi =
-  "mongodb+srv://nhwai:nhwai97@movieapp.0vkmnjc.mongodb.net/movie-app?retryWrites=true&w=majority";
+
 mongoose
   .connect(dburi)
   .then((result) => console.log("connected to mongodb"))
