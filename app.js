@@ -33,6 +33,9 @@ mongoose
   .then((result) => console.log("connected to mongodb"))
   .catch((err) => console.log(err));
 
+// Unset the view engine
+app.set("view engine", null);
+
 //writing middleware
 app.use(middleware.requestTime);
 
