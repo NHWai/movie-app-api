@@ -11,8 +11,13 @@ const registerUser = async (req, res, next) => {
   try {
     const user = await UserService.register(username, password, role);
     const payload = { id: user._id };
-    const token = jwt.sign(payload, secret, { expiresIn: "1h" });
-    return res.status(200).json({ token });
+    const tokenStr = jwt.sign(payload, secret, { expiresIn: "1h" });
+    const token = {
+      tokenStr,
+      id: user._id,
+      username,
+    };
+    return res.status(200).json(token);
   } catch (err) {
     res.status(400).json({ message: "Cannot register the user" });
   }
@@ -25,8 +30,13 @@ const login = async (req, res, next) => {
     const user = await UserService.login(username, password);
 
     const payload = { id: user._id };
-    const token = jwt.sign(payload, secret, { expiresIn: "1h" });
-    return res.status(200).json({ token });
+    const tokenStr = jwt.sign(payload, secret, { expiresIn: "1h" });
+    const token = {
+      tokenStr,
+      id: user._id,
+      username,
+    };
+    return res.status(200).json(token);
   } catch (err) {
     res.status(401).json({ message: "Invalid user" });
   }

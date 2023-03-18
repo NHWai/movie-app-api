@@ -18,9 +18,15 @@ const getAllCastsHandler = async (req, res, next) => {
 
 const getCastsByMovieIdHandler = async (req, res, next) => {
   const movieId = req.params["movieId"];
-  const movie = await CastService.getCastsByMovieId(movieId);
+  const movie = await (await CastService.getCastsByMovieId(movieId)).pop();
   if (!movie) throw Error("Cannot get casts with given movieId");
-  return res.status(200).json(movie);
+  const response = {
+    meta: {
+      id: movie._id,
+    },
+    data: movie,
+  };
+  return res.status(200).json(response);
 };
 
 const getCastByIdHandler = async (req, res, next) => {
@@ -34,7 +40,13 @@ const newCastHandler = async (req, res, next) => {
   const cast = req.body;
   const newCast = await CastService.saveCast(cast);
   if (!newCast) throw Error("Cannot create a new cast");
-  return res.status(201).json(newCast);
+  const response = {
+    meta: {
+      id: newCast._id,
+    },
+    data: newCast,
+  };
+  return res.status(201).json(response);
 };
 
 const updateCastHandler = async (req, res, next) => {

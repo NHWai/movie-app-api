@@ -24,12 +24,14 @@ const saveMovie = async (movie) => {
   return newMovie.save();
 };
 
-const updateMovie = async (movideId, movie) => {
-  return Movies.findByIdAndUpdate(movideId, movie, { new: true });
+const updateMovie = async (movieId, userid, movie) => {
+  const filter = { _id: movieId, user: userid };
+  return Movies.findOneAndUpdate(filter, movie, { new: true });
 };
 
-const deleteMovie = async (movideId) => {
-  return Movies.findByIdAndDelete(movideId);
+const deleteMovie = async (movieId, userid) => {
+  const filter = { _id: movieId, user: userid };
+  return Movies.findOneAndDelete(filter);
 };
 
 const findMovieByDirector = async (directorName) => {

@@ -15,11 +15,12 @@ const saveCast = async (cast) => {
   });
   await newCast.save();
   // populate with "movie" bcuz in Cast Model "movie" is set as Foregin Key
-  return newCast.populate("movie");
+  // return newCast.populate("movie");
+  return newCast;
 };
 
 const getCastsByMovieId = async (movieId) => {
-  return Casts.find({ movie: movieId }).populate("movie");
+  return Casts.find({ movie: movieId });
 };
 
 const getCastById = async (castId) => {

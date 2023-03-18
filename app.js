@@ -13,17 +13,24 @@ const todosRouter = require("./routes/todos");
 const moviesRouter = require("./routes/movies");
 const castsRouter = require("./routes/casts");
 const usersRouter = require("./routes/users");
-const auth = require("./middleware/auth");
 
 var app = express();
 app.use(cors());
 //connecting to mongodb database
+// mongoose
+//   .connect(db, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => console.log("MongoDB connected"))
+//   .catch((err) => console.log(err));
+
+//connecting to mongodb atlas
+const dburi =
+  "mongodb+srv://nhwai:nhwai97@movieapp.0vkmnjc.mongodb.net/movie-app?retryWrites=true&w=majority";
 mongoose
-  .connect(db, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("MongoDB connected"))
+  .connect(dburi)
+  .then((result) => console.log("connected to mongodb"))
   .catch((err) => console.log(err));
 
 //writing middleware
@@ -36,8 +43,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api/todos", todosRouter);
-app.use("/api/movies", auth.verifyUserToken, moviesRouter);
-app.use("/api/casts", auth.verifyUserToken, castsRouter);
+app.use("/api/movies", moviesRouter);
+app.use("/api/casts", castsRouter);
 app.use("/api/users", usersRouter);
 
 // catch 404 and forward to error handler

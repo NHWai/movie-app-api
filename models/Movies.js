@@ -3,12 +3,25 @@ const Schema = mongoose.Schema;
 
 /* Movie use Director as Embedding Model */
 const MovieSchema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId, //setting user as foregin key
+    ref: "Users",
+    required: true,
+  },
   title: {
     type: String,
     required: true,
+    validate: {
+      validator: function (v) {
+        return /\S/.test(v); // check if v contains at least one non-whitespace character
+      },
+      message: (props) =>
+        `${props.path} cannot contain only whitespace characters`,
+    },
   },
   director: {
     type: {
+      _id: false,
       name: {
         type: String,
         required: true,

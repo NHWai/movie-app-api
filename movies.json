@@ -1,0 +1,68 @@
+[
+  {
+    "title": "Avatar",
+    "director": {
+      "name": "James Cameron",
+      "phoneNo": "0985632444",
+      "gender": "male"
+    },
+    "rating": 3.8,
+    "review": "Great Sci-Fi",
+    "year": 2009
+  },
+  {
+    "title": "Titanic",
+    "director": {
+      "name": "James Cameron",
+      "phoneNo": "0985632444",
+      "gender": "male"
+    },
+    "rating": 3.8,
+    "review": "Nice",
+    "year": 1997
+  },
+  {
+    "title": "The Hurt Locker",
+    "director": {
+      "name": "Kathryn Bigelow",
+      "phoneNo": "0985632555",
+      "gender": "female"
+    },
+    "rating": 3.3,
+    "review": "Good",
+    "year": 2008
+  },
+  {
+    "title": "Middle of Nowhere ",
+    "director": {
+      "name": "Ava DuVernay",
+      "phoneNo": "098892555",
+      "gender": "female"
+    },
+    "rating": 3.3,
+    "review": "Good",
+    "year": 2012
+  },
+  {
+    "title": "Breaking Bad",
+    "director": {
+      "name": "Vincent Gilligan",
+      "phoneNo": "098995368",
+      "gender": "male"
+    },
+    "rating": 4.5,
+    "review": "Best",
+    "year": 2008
+  },
+  {
+    "title": "A Man Called Otto",
+    "director": {
+      "name": "Marc Forster",
+      "phoneNo": "0989914568",
+      "gender": "male"
+    },
+    "rating": 4.5,
+    "review": "Nice Movie",
+    "year": 2022
+  }
+]

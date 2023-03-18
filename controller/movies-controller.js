@@ -3,9 +3,7 @@ const MovieService = require("../service/MovieService");
 //Error Handler Function
 const handle = (fn, httpErrorCode) => (req, res, next) => {
   return fn(req, res, next).catch((err) => {
-    res
-      .status(httpErrorCode)
-      .json({ message: Object.keys(err).length === 0 ? err.message : err });
+    res.status(httpErrorCode).json({ message: err.message });
   });
 };
 
@@ -13,29 +11,56 @@ const handle = (fn, httpErrorCode) => (req, res, next) => {
 const getAllMovieHandler = async (req, res, next) => {
   const movielist = await MovieService.getAllMovies();
   if (!movielist) throw Error("No movies");
+  const resBody = {
+    meta: {
+      total: movielist.length,
+    },
+    data: [...movielist],
+  };
 
-  return res.status(200).json({ movielist });
+  return res.status(200).json(resBody);
 };
 
 const getMovieByIdHandler = async (req, res, next) => {
   const movieId = req.params["movieId"];
   const movie = await MovieService.getMovieById(movieId);
   if (!movie) throw Error("No movies found for given id");
-  return res.status(200).json(movie);
+  const resBody = {
+    meta: {
+      id: movieId,
+    },
+    data: movie,
+  };
+  return res.status(200).json(resBody);
 };
 
 const findMovieByTitleHandler = async (req, res, next) => {
   const title = req.params["title"].split("_").join(" ");
   const movie = await MovieService.getMovieByTitle(title);
   if (!movie) throw Error("No movies found by given title");
-  return res.status(200).json(movie);
+  const resBody = {
+    meta: {
+      total: movie.length,
+    },
+    data: movie,
+  };
+  return res.status(200).json(resBody);
 };
 
 const newMovieHandler = async (req, res, next) => {
   const movie = req.body;
+  const usrId = req.user.id;
+  movie.user = usrId;
   const newMovie = await MovieService.saveMovie(movie);
   if (!newMovie) throw Error("Cannot create a new movie");
-  return res.status(200).json(newMovie);
+  const resBody = {
+    meta: {
+      id: newMovie._id,
+    },
+    data: newMovie,
+  };
+  res.location(`/movies/${newMovie._id}`);
+  return res.status(201).json(resBody);
 };
 
 const findMovieByDirectorHandler = async (req, res, next) => {
@@ -44,20 +69,36 @@ const findMovieByDirectorHandler = async (req, res, next) => {
   const movies = await MovieService.findMovieByDirector(director);
 
   if (!movies || movies.length === 0) throw Error("No movies Found");
-  return res.status(200).json(movies);
+  const resBody = {
+    meta: {
+      total: movies.length,
+    },
+    data: movies,
+  };
+  return res.status(200).json(resBody);
 };
 
 const updateMovieHandler = async (req, res, next) => {
   const movieId = req.params["movieId"];
+  const userid = req.user.id;
   const movie = req.body;
-  const movieUpdated = await MovieService.updateMovie(movieId, movie);
+
+  const movieUpdated = await MovieService.updateMovie(movieId, userid, movie);
   if (!movieUpdated) throw Error("Cannot update the movie");
-  return res.status(200).json(movieUpdated);
+  const resBody = {
+    meta: {
+      id: movieId,
+    },
+    data: movieUpdated,
+  };
+  return res.status(200).json(resBody);
 };
 
 const deleteMovieHandler = async (req, res, next) => {
   const movieId = req.params["movieId"];
-  const movie = await MovieService.deleteMovie(movieId);
+  const userid = req.user.id;
+  const movie = await MovieService.deleteMovie(movieId, userid);
+  if (movie === null) throw Error("Cannot find the movie");
   return res.status(204).json(movie);
 };
 
