@@ -10,28 +10,27 @@ const dburi = process.env.MONGODB_URI;
 var cors = require("cors");
 
 const middleware = require("./middleware");
-const todosRouter = require("./routes/todos");
 const moviesRouter = require("./routes/movies");
 const castsRouter = require("./routes/casts");
 const usersRouter = require("./routes/users");
 
 var app = express();
 app.use(cors());
-//connecting to mongodb database
-// mongoose
-//   .connect(db, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .then(() => console.log("MongoDB connected"))
-//   .catch((err) => console.log(err));
+// connecting to mongodb database
+mongoose
+  .connect(db, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log(err));
 
 //connecting to mongodb atlas
 
-mongoose
-  .connect(dburi)
-  .then((result) => console.log("connected to mongodb"))
-  .catch((err) => console.log(err));
+// mongoose
+//   .connect(dburi)
+//   .then((result) => console.log("connected to mongodb"))
+//   .catch((err) => console.log(err));
 
 // Unset the view engine
 app.set("view engine", null);
@@ -45,7 +44,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/api/todos", todosRouter);
+
 app.use("/api/movies", moviesRouter);
 app.use("/api/casts", castsRouter);
 app.use("/api/users", usersRouter);

@@ -26,15 +26,34 @@ const MovieSchema = new Schema({
         type: String,
         required: true,
       },
-      phoneNo: {
-        type: String,
-      },
       gender: {
         type: String,
         enum: ["male", "female"],
         required: true,
       },
     },
+  },
+  genres: {
+    type: [String],
+    enum: [
+      "Action",
+      "Anime",
+      "Adventure",
+      "Comedy",
+      "Crime",
+      "Drama",
+      "Fantasy",
+      "Horror",
+      "Legal",
+      "Mystery",
+      "Musical",
+      "Romance",
+      "Sci/Fi",
+      "Thriller",
+      "Western",
+      "SitCom",
+    ],
+    required: true,
   },
   rating: {
     type: Number,
@@ -54,4 +73,23 @@ module.exports = mongoose.model("Movies", MovieSchema);
 
 /*
 (Notes: In embedding model(Movie Model), ID of embedded model (Director) have to be given if you are creating a new movie with same old director. If not there will be a confilct in Director ID which means same director with different ID  )
+
+const movieCategories = [
+  "Action",
+  "Anime",
+  "Adventure",
+  "Comedy",
+  "Crime",
+  "Drama",
+  "Fantasy",
+  "Horror",
+  "Legal Drama",
+  "Mystery",
+  "Romance",
+  "Sci/Fi",
+  "Thriller",
+  "Western",
+  "SitCom"
+];
+
 */

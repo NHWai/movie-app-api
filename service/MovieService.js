@@ -14,7 +14,7 @@ const getMovieByTitle = async (titleName) => {
   return Movies.find({
     title: {
       $regex: titleName,
-      $options: "i",
+      $options: "i", //disable case sensitive
     },
   });
 };
