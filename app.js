@@ -15,22 +15,37 @@ const castsRouter = require("./routes/casts");
 const usersRouter = require("./routes/users");
 
 var app = express();
-app.use(cors());
+
+const allowedOrigins = ["http://localhost:3000"];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    //if !origin is set, we cannot make requests from postman (still need to learn more)
+    //if (allowedOrigins.indexOf(origin) !== -1 || !origin) is set, the cors middleware will not check origin header which will lead to CSRF attacks
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error(`Not allowed by CORS`));
+    }
+  },
+};
+
+app.use(cors(corsOptions));
 // connecting to local mongodb database
-// mongoose
-//   .connect(db, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .then(() => console.log("MongoDB connected"))
-//   .catch((err) => console.log(err));
+mongoose
+  .connect(db, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.log(err));
 
 //connecting to mongodb atlas
 
-mongoose
-  .connect(dburi)
-  .then((result) => console.log("connected to mongodb"))
-  .catch((err) => console.log(err));
+// mongoose
+//   .connect(dburi)
+//   .then((result) => console.log("connected to mongodb"))
+//   .catch((err) => console.log(err));
 
 // Unset the view engine
 app.set("view engine", null);
