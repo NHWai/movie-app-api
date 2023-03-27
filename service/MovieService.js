@@ -19,6 +19,15 @@ const getMovieByTitle = async (titleName) => {
   });
 };
 
+const getMovieByGenre = async (genreName) => {
+  return Movies.find({
+    genres: {
+      $regex: genreName,
+      $options: "i", //disable case sensitive
+    },
+  });
+};
+
 const saveMovie = async (movie) => {
   const newMovie = new Movies(movie);
   return newMovie.save();
@@ -52,4 +61,5 @@ module.exports = {
   updateMovie,
   deleteMovie,
   findMovieByDirector,
+  getMovieByGenre,
 };

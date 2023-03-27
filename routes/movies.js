@@ -6,6 +6,7 @@ const auth = require("../middleware/auth");
 router.get("/", MoviesController.getAllMovie);
 router.get("/:movieId", MoviesController.getMovieById);
 router.get("/title/:title", MoviesController.findMovieByTitle);
+router.get("/genre/:genre", MoviesController.findMovieByGenre);
 router.get("/director/:director", MoviesController.findMovieByDirector);
 
 router.post("/", auth.verifyUserToken, MoviesController.newMovie);

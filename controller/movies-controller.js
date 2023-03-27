@@ -47,6 +47,17 @@ const findMovieByTitleHandler = async (req, res, next) => {
   return res.status(200).json(resBody);
 };
 
+const findMovieByGenreHandler = async (req, res, next) => {
+  const genre = req.params["genre"];
+  const movie = await MovieService.getMovieByGenre(genre);
+  if (!movie) throw Error("No movies found by given genres");
+  const resBody = {
+    meta: { total: movie.length },
+    data: movie,
+  };
+  return res.status(200).json(resBody);
+};
+
 const newMovieHandler = async (req, res, next) => {
   const movie = req.body;
   const usrId = req.user.id;
@@ -113,6 +124,9 @@ const getMovieById = (req, res, next) =>
 const findMovieByTitle = (req, res, next) =>
   handle(findMovieByTitleHandler, 400)(req, res, next);
 
+const findMovieByGenre = (req, res, next) =>
+  handle(findMovieByGenreHandler, 400)(req, res, next);
+
 const findMovieByDirector = (req, res, next) =>
   handle(findMovieByDirectorHandler, 400)(req, res, next);
 
@@ -129,6 +143,7 @@ module.exports = {
   getAllMovie,
   getMovieById,
   findMovieByTitle,
+  findMovieByGenre,
   newMovie,
   updateMovie,
   deleteMovie,
