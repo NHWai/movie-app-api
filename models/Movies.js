@@ -67,6 +67,12 @@ const MovieSchema = new Schema({
     type: Number,
     required: true,
   },
+  photoUrl: {
+    type: String,
+  },
+  photoId: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Movies", MovieSchema);

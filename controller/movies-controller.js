@@ -1,4 +1,5 @@
 const MovieService = require("../service/MovieService");
+const cloudinary = require("../config/cloudinary");
 
 //Error Handler Function
 const handle = (fn, httpErrorCode) => (req, res, next) => {
@@ -59,9 +60,25 @@ const findMovieByGenreHandler = async (req, res, next) => {
 };
 
 const newMovieHandler = async (req, res, next) => {
-  const movie = req.body;
-  const usrId = req.user.id;
-  movie.user = usrId;
+  const movie = {
+    ...req.body,
+    rating: Number(req.body.rating),
+    year: Number(req.body.year),
+    genres: JSON.parse(req.body.genres),
+    director: JSON.parse(req.body.director),
+    user: req.user.id,
+  };
+
+  // if cover image is uploaded, save it in cloudinary
+  if (req.files && req.files.length > 0) {
+    const result = await cloudinary.uploader.upload(req.files[0].path, {
+      resource_type: "auto",
+      folder: "DEV",
+    });
+    movie.photoUrl = result.secure_url;
+    movie.photoId = result.public_id;
+  }
+
   const newMovie = await MovieService.saveMovie(movie);
   if (!newMovie) throw Error("Cannot create a new movie");
   const resBody = {
@@ -90,11 +107,34 @@ const findMovieByDirectorHandler = async (req, res, next) => {
 };
 
 const updateMovieHandler = async (req, res, next) => {
-  const movieId = req.params["movieId"];
-  const userid = req.user.id;
-  const movie = req.body;
+  const movie = {
+    ...req.body,
+    rating: Number(req.body.rating),
+    year: Number(req.body.year),
+    genres: JSON.parse(req.body.genres),
+    director: JSON.parse(req.body.director),
+    user: req.user.id,
+  };
 
-  const movieUpdated = await MovieService.updateMovie(movieId, userid, movie);
+  // // if new cover image is uploaded, save it in cloudinary
+  if (req.files && req.files.length > 0) {
+    const result = await cloudinary.uploader.upload(req.files[0].path, {
+      resource_type: "auto",
+      folder: "DEV",
+    });
+    //deleting old photo in cloudinary
+    movie.photoId && (await cloudinary.uploader.destroy(movie.photoId));
+
+    //setting the url and id of newly uploaded photo
+    movie.photoUrl = result.secure_url;
+    movie.photoId = result.public_id;
+  }
+  const movieId = req.params["movieId"];
+  const movieUpdated = await MovieService.updateMovie(
+    movieId,
+    req.user.id,
+    movie
+  );
   if (!movieUpdated) throw Error("Cannot update the movie");
   const resBody = {
     meta: {
@@ -106,8 +146,13 @@ const updateMovieHandler = async (req, res, next) => {
 };
 
 const deleteMovieHandler = async (req, res, next) => {
+  //deleting the photo in cloudinary
+  // await cloudinary.uploader.destroy(photoId);
   const movieId = req.params["movieId"];
+  const photoId = "DEV/" + req.params["photoId"];
   const userid = req.user.id;
+  //deleting the photo in cloudinary
+  await cloudinary.uploader.destroy(photoId);
   const movie = await MovieService.deleteMovie(movieId, userid);
   if (movie === null) throw Error("Cannot find the movie");
   return res.status(204).json(movie);

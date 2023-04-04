@@ -5,6 +5,7 @@ const { db } = require("./config/database");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+
 require("dotenv").config();
 const dburi = process.env.MONGODB_URI;
 var cors = require("cors");
@@ -23,9 +24,9 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin: function (origin, callback) {
-    //if !origin is set, we cannot make requests from postman (still need to learn more)
+    //if (allowedOrigins.indexOf(origin) !== -1 || !origin) is set, we can make requests from postman (still need to learn more)
     //if (allowedOrigins.indexOf(origin) !== -1 || !origin) is set, the cors middleware will not check origin header which will lead to CSRF attacks
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
       callback(new Error(`Not allowed by CORS`));

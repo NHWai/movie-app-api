@@ -18,13 +18,14 @@ const getAllCastsHandler = async (req, res, next) => {
 
 const getCastsByMovieIdHandler = async (req, res, next) => {
   const movieId = req.params["movieId"];
-  const movie = await (await CastService.getCastsByMovieId(movieId)).pop();
-  if (!movie) throw Error("Cannot get casts with given movieId");
+  const casts = await CastService.getCastsByMovieId(movieId);
+
+  if (!casts) throw Error("Cannot get casts with given movieId");
   const response = {
     meta: {
-      id: movie._id,
+      id: casts.length > 0 ? casts[0]._id : null,
     },
-    data: movie,
+    data: casts,
   };
   return res.status(200).json(response);
 };
