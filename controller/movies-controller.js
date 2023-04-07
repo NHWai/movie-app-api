@@ -72,8 +72,10 @@ const newMovieHandler = async (req, res, next) => {
   // if cover image is uploaded, save it in cloudinary
   if (req.files && req.files.length > 0) {
     const result = await cloudinary.uploader.upload(req.files[0].path, {
-      resource_type: "auto",
+      resource_type: "image",
       folder: "DEV",
+      use_filename: true,
+      allowed_formats: ["jpg", "jpeg", "png"],
     });
     movie.photoUrl = result.secure_url;
     movie.photoId = result.public_id;
@@ -118,12 +120,15 @@ const updateMovieHandler = async (req, res, next) => {
 
   // // if new cover image is uploaded, save it in cloudinary
   if (req.files && req.files.length > 0) {
-    const result = await cloudinary.uploader.upload(req.files[0].path, {
-      resource_type: "auto",
+    const result = await cloudinary.uploader.upload(req.files[0].path,  {
+      resource_type: "image",
       folder: "DEV",
+      use_filename: true,
+      allowed_formats: ["jpg", "jpeg", "png"],
     });
     //deleting old photo in cloudinary
-    movie.photoId && (await cloudinary.uploader.destroy(movie.photoId));
+    movie.photoId &&
+      (await cloudinary.uploader.destroy(movie.photoId, { invalidate: true }));
 
     //setting the url and id of newly uploaded photo
     movie.photoUrl = result.secure_url;
@@ -146,13 +151,11 @@ const updateMovieHandler = async (req, res, next) => {
 };
 
 const deleteMovieHandler = async (req, res, next) => {
-  //deleting the photo in cloudinary
-  // await cloudinary.uploader.destroy(photoId);
   const movieId = req.params["movieId"];
   const photoId = "DEV/" + req.params["photoId"];
   const userid = req.user.id;
   //deleting the photo in cloudinary
-  await cloudinary.uploader.destroy(photoId);
+  await cloudinary.uploader.destroy(photoId, { invalidate: true });
   const movie = await MovieService.deleteMovie(movieId, userid);
   if (movie === null) throw Error("Cannot find the movie");
   return res.status(204).json(movie);
