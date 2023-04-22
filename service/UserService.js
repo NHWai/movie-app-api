@@ -33,7 +33,12 @@ const login = async (username, password) => {
   throw Error("Invalid user or password");
 };
 
+const getUserById = async (userId) => {
+  return Users.findById(userId);
+};
+
 module.exports = {
   register,
   login,
+  getUserById,
 };

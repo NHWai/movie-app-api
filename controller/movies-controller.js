@@ -1,4 +1,5 @@
 const MovieService = require("../service/MovieService");
+const Reviews = require("../models/Reviews.js");
 const cloudinary = require("../config/cloudinary");
 
 //Error Handler Function
@@ -63,6 +64,7 @@ const newMovieHandler = async (req, res, next) => {
   const movie = {
     ...req.body,
     rating: Number(req.body.rating),
+    totalRating: Number(req.body.rating),
     year: Number(req.body.year),
     genres: JSON.parse(req.body.genres),
     director: JSON.parse(req.body.director),
@@ -117,10 +119,9 @@ const updateMovieHandler = async (req, res, next) => {
     director: JSON.parse(req.body.director),
     user: req.user.id,
   };
-
   // // if new cover image is uploaded, save it in cloudinary
   if (req.files && req.files.length > 0) {
-    const result = await cloudinary.uploader.upload(req.files[0].path,  {
+    const result = await cloudinary.uploader.upload(req.files[0].path, {
       resource_type: "image",
       folder: "DEV",
       use_filename: true,
@@ -134,7 +135,26 @@ const updateMovieHandler = async (req, res, next) => {
     movie.photoUrl = result.secure_url;
     movie.photoId = result.public_id;
   }
+
   const movieId = req.params["movieId"];
+  //getting the total rating from REVIEWS Model
+  const reviewsRating = (await Reviews.find({ movieId: movieId })).map(
+    (el) => el.rating
+  );
+
+  //if there are reviews, calcutate total rating from all reviews
+  if (reviewsRating.length > 0) {
+    const grandTotalRating = reviewsRating.reduce(
+      (accumulator, currval) => accumulator + currval,
+      movie.rating
+    );
+    movie.totalRating = (grandTotalRating / (reviewsRating.length + 1)).toFixed(
+      1
+    );
+  } else {
+    movie.totalRating = movie.rating;
+  }
+
   const movieUpdated = await MovieService.updateMovie(
     movieId,
     req.user.id,

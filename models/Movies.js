@@ -59,6 +59,10 @@ const MovieSchema = new Schema({
     type: Number,
     required: true,
   },
+  totalRating: {
+    type: Number,
+    required: true,
+  },
   review: {
     type: String,
     required: true,

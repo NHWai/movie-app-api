@@ -5,7 +5,10 @@ const getAllMovies = async () => {
 };
 
 const getMovieById = async (movieId) => {
-  return Movies.findById(movieId);
+  return Movies.findById(movieId).populate({
+    path: "user",
+    select: "username",
+  });
 };
 
 const getMovieByTitle = async (titleName) => {

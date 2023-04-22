@@ -33,7 +33,6 @@ const login = async (req, res, next) => {
   let password = req.body["password"];
   try {
     const user = await UserService.login(username, password);
-
     const payload = { id: user._id };
     const tokenStr = jwt.sign(payload, secret, { expiresIn: "1h" });
     // Calculate the expiration time for the token (50 minutes from now)
@@ -50,4 +49,15 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = { registerUser, login };
+const getUserById = async (req, res, next) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await UserService.getUserById(userId);
+    return res.status(200).json(user);
+  } catch (err) {
+    res.status(400).json({ message: err });
+  }
+};
+
+module.exports = { registerUser, login, getUserById };

@@ -14,6 +14,7 @@ const middleware = require("./middleware");
 const moviesRouter = require("./routes/movies");
 const castsRouter = require("./routes/casts");
 const usersRouter = require("./routes/users");
+const reviewsRouter = require("./routes/reviews");
 
 var app = express();
 
@@ -26,7 +27,7 @@ const corsOptions = {
   origin: function (origin, callback) {
     //if (allowedOrigins.indexOf(origin) !== -1 || !origin) is set, we can make requests from postman (still need to learn more)
     //if (allowedOrigins.indexOf(origin) !== -1 || !origin) is set, the cors middleware will not check origin header which will lead to CSRF attacks
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+    if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       callback(new Error(`Not allowed by CORS`));
@@ -65,6 +66,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/movies", moviesRouter);
 app.use("/api/casts", castsRouter);
 app.use("/api/users", usersRouter);
+app.use("/api/reviews", reviewsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
