@@ -26,11 +26,6 @@ const MovieSchema = new Schema({
         type: String,
         required: true,
       },
-      gender: {
-        type: String,
-        enum: ["male", "female"],
-        required: true,
-      },
     },
   },
   genres: {
