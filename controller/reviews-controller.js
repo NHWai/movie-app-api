@@ -11,6 +11,7 @@ const handle = (fn, httpErrorCode) => (req, res, next) => {
 
 const newReviewHandler = async (req, res, next) => {
   const { movieId } = req.params;
+
   const reqReview = {
     ...req.body,
     rating: Number(req.body.rating),
@@ -22,9 +23,13 @@ const newReviewHandler = async (req, res, next) => {
   const reviewRatings = (await Reviews.find({ movieId: movieId })).map(
     (review) => review.rating
   );
+
   let movieRating;
+  let totalReviews;
   if (reviewRatings.length > 0) {
     reviewRatings.push(reqReview.rating);
+
+    totalReviews = reviewRatings.length + 1;
     movieRating = (
       reviewRatings.reduce(
         (accumulator, currVal) => accumulator + currVal,
@@ -33,13 +38,17 @@ const newReviewHandler = async (req, res, next) => {
       (reviewRatings.length + 1)
     ).toFixed(1);
   } else {
+    totalReviews = 2;
     movieRating = ((orginalRating + reqReview.rating) * 0.5).toFixed(1);
   }
+
   const newReview = await ReviewService.saveReview(
     reqReview,
     movieRating,
+    totalReviews,
     movieId
   );
+
   if (!newReview) throw Error("Cannot create the review");
   const resBody = {
     meta: {

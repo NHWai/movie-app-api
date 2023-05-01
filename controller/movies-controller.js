@@ -69,6 +69,7 @@ const newMovieHandler = async (req, res, next) => {
     genres: JSON.parse(req.body.genres),
     director: JSON.parse(req.body.director),
     user: req.user.id,
+    totalReviews: 1,
   };
 
   // if cover image is uploaded, save it in cloudinary
