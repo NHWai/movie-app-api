@@ -22,11 +22,10 @@ const getMovieByTitle = async (titleName) => {
   });
 };
 
-const getMovieByGenre = async (genreName) => {
+const getMovieByGenre = async (genreNames) => {
   return Movies.find({
     genres: {
-      $regex: genreName,
-      $options: "i", //disable case sensitive
+      $in: genreNames.map((name) => new RegExp(name, "i")),
     },
   });
 };

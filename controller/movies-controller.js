@@ -50,7 +50,7 @@ const findMovieByTitleHandler = async (req, res, next) => {
 };
 
 const findMovieByGenreHandler = async (req, res, next) => {
-  const genre = req.params["genre"];
+  const genre = req.params["genre"].split(",");
   const movie = await MovieService.getMovieByGenre(genre);
   if (!movie) throw Error("No movies found by given genres");
   const resBody = {
