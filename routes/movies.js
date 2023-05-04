@@ -9,6 +9,7 @@ router.get("/", MoviesController.getAllMovie);
 router.get("/:movieId", MoviesController.getMovieById);
 router.get("/title/:title", MoviesController.findMovieByTitle);
 router.get("/genre/:genre", MoviesController.findMovieByGenre);
+router.get("/userId/:userId", MoviesController.findMovieByUserId);
 router.get("/director/:director", MoviesController.findMovieByDirector);
 
 router.post("/", auth.verifyUserToken, upload.any(), MoviesController.newMovie);

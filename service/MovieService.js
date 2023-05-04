@@ -55,6 +55,13 @@ const findMovieByDirector = async (directorName) => {
   });
 };
 
+const findMovieByUserId = async (userId) => {
+  //quering movies by reference objectid
+  return Movies.find({
+    user: userId,
+  });
+};
+
 module.exports = {
   getAllMovies,
   getMovieById,
@@ -63,5 +70,6 @@ module.exports = {
   updateMovie,
   deleteMovie,
   findMovieByDirector,
+  findMovieByUserId,
   getMovieByGenre,
 };
