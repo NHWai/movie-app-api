@@ -34,6 +34,7 @@ const MovieSchema = new Schema({
       "Action",
       "Anime",
       "Adventure",
+      "Biography",
       "Comedy",
       "Crime",
       "Drama",
