@@ -115,7 +115,7 @@ const findMovieByUserIdHandler = async (req, res, next) => {
   const userId = req.params["userId"];
   console.log({ userId });
   const movies = await MovieService.findMovieByUserId(userId);
-  if (!movies || movies.length === 0) throw Error("No movies Found");
+  if (!movies) throw Error("No movies Found");
   const resBody = {
     meta: {
       total: movies.length,
