@@ -1,4 +1,5 @@
 const MovieService = require("../service/MovieService");
+const ReviewService = require("../service/ReviewService");
 const Reviews = require("../models/Reviews.js");
 const cloudinary = require("../config/cloudinary");
 
@@ -26,12 +27,19 @@ const getAllMovieHandler = async (req, res, next) => {
 const getMovieByIdHandler = async (req, res, next) => {
   const movieId = req.params["movieId"];
   const movie = await MovieService.getMovieById(movieId);
+  const reviews = await ReviewService.getReviewsByMovieId(movieId);
   if (!movie) throw Error("No movies found for given id");
+  if (!reviews) throw Error("No reviews found for given id");
+  const genreArr = movie.genres;
+  const moreItems = (await MovieService.getMovieByGenre(genreArr)).filter(
+    (item) => item.title !== movie.title
+  );
+
   const resBody = {
     meta: {
       id: movieId,
     },
-    data: movie,
+    data: { movie, reviews, moreItems },
   };
   return res.status(200).json(resBody);
 };

@@ -54,7 +54,16 @@ const getUserById = async (req, res, next) => {
 
   try {
     const user = await UserService.getUserById(userId);
-    return res.status(200).json(user);
+    const resBody = {
+      meta: {
+        id: user._id,
+      },
+      data: {
+        id: user._id,
+        username: user.username,
+      },
+    };
+    return res.status(200).json(resBody);
   } catch (err) {
     res.status(400).json({ message: err });
   }
