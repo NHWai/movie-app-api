@@ -1,7 +1,10 @@
 let Movies = require("../models/Movies.js");
 
 const getAllMovies = async () => {
-  return Movies.find();
+  return Movies.find().populate({
+    path: "user",
+    select: "username",
+  });
 };
 
 const getMovieById = async (movieId) => {
@@ -37,7 +40,10 @@ const saveMovie = async (movie) => {
 
 const updateMovie = async (movieId, userid, movie) => {
   const filter = { _id: movieId, user: userid };
-  return Movies.findOneAndUpdate(filter, movie, { new: true });
+  return Movies.findOneAndUpdate(filter, movie, { new: true }).populate({
+    path: "user",
+    select: "username",
+  });
 };
 
 const deleteMovie = async (movieId, userid) => {
@@ -59,6 +65,9 @@ const findMovieByUserId = async (userId) => {
   //quering movies by reference objectid
   return Movies.find({
     user: userId,
+  }).populate({
+    path: "user",
+    select: "username",
   });
 };
 

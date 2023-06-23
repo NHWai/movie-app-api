@@ -140,8 +140,9 @@ const updateMovieHandler = async (req, res, next) => {
     year: Number(req.body.year),
     genres: JSON.parse(req.body.genres),
     director: JSON.parse(req.body.director),
-    user: req.user.id,
+    user: JSON.parse(req.body.user),
   };
+
   // // if new cover image is uploaded, save it in cloudinary
   if (req.files && req.files.length > 0) {
     const result = await cloudinary.uploader.upload(req.files[0].path, {
@@ -180,7 +181,7 @@ const updateMovieHandler = async (req, res, next) => {
 
   const movieUpdated = await MovieService.updateMovie(
     movieId,
-    req.user.id,
+    movie.user._id,
     movie
   );
   if (!movieUpdated) throw Error("Cannot update the movie");
