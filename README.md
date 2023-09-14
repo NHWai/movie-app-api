@@ -17,6 +17,7 @@
 - [x] Express Framework
 - [x] Json Web Token
 - [x] Cloudinary
+- [x] MongoDB
 
 #### UserRole
 - [x] Upload movies info
